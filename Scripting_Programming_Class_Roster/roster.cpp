@@ -265,8 +265,6 @@ int main()
 	Roster classRoster;
 	Degree degree{};
 
-	std::cout << &classRoster << std::endl;
-
 	std::string data;
 	std::string data_in[COLUMNS];
 
@@ -296,31 +294,7 @@ int main()
 		classRoster.add(data_in[0], data_in[1], data_in[2], data_in[3], std::stoi(data_in[4]), std::stoi(data_in[5]), std::stoi(data_in[6]), std::stoi(data_in[7]), degree);
 	}
 
-	//classRoster.printAll();
-
 	std::cout << std::endl;
-	/*
-	classRoster.printInvalidEmails();
-
-	std::cout << std::endl;
-	*/
-	
-	//looping through the classRosterArray to get the studentID.
-	//calling the printDaysInCourse with the current studentID.
-	/*for (int i = 0; i < MAX; i++)
-	{
-		std::string studentID = classRoster.classRosterArray[i]->get_studentID();
-		classRoster.printDaysInCourse(studentID);
-	}
-	*/
-
-	//instructions stated to printByDegreeProgram for just software.
-	/*classRoster.printByDegreeProgram(Degree::SOFTWARE);
-	std::cout << std::endl;
-
-	classRoster.remove("A3");
-	classRoster.remove("A3");
-	*/
 
 	int input = getUserInput(classRoster);
 	while (input != 5) {
