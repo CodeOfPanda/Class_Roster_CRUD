@@ -214,6 +214,7 @@ void createStudent(Roster& classRoster) {
 
 int getUserInput(Roster& classRoster) {
 	std::string userInput = "";
+	std::string userDelete = "";
 
 	std::cout << "Please enter the numeric value for what you would like to do." << std::endl;
 	std::cout << "	1) add" << std::endl
@@ -235,7 +236,9 @@ int getUserInput(Roster& classRoster) {
 		return 2;
 	}
 	else if (userInput == "3") {
-		std::cout << "user typed delete" << std::endl;
+		std::cout << "Please enter the student's ID: " << std::endl;
+		std::cin >> userDelete;
+		classRoster.remove(userDelete);
 		return 3;
 	}
 	else if (userInput == "4") {
