@@ -46,6 +46,108 @@ void Roster::add(std::string studentID, std::string firstName, std::string lastN
 	}
 };
 
+Student* Roster::getStudent(std::string studentID) {
+	Student* student = nullptr;
+
+	for (int i = 0; i < (sizeof(classRosterArray) / sizeof(classRosterArray[0])); i++) {
+			if (studentID == classRosterArray[i]->get_studentID()) {
+				student = classRosterArray[i];
+				break;
+			}
+	}
+
+	return student;
+};
+
+
+int Roster::getStudentPosition(Student* student) {
+	for (int i = 0; i < (sizeof(classRosterArray) / sizeof(classRosterArray[0])); i++) {
+		if (student->get_studentID() == classRosterArray[i]->get_studentID()) {
+			return i;
+			break;
+		}
+	}
+}
+
+
+void Roster::modifyStudent(Student* student) {
+	std::string firstName;
+	std::string lastName;
+	std::string emailAddress;
+	int age;
+	int degreeIn;
+	Degree degree;
+	int updateNum;
+
+	std::cout << "Here is the information that we have for student: " << student->get_studentID() << std::endl;
+	student->Print();
+	std::cout << std::endl;
+	std::cout << "What information would you like to update on student: " << student->get_studentID() << std::endl;
+	std::cout << "	1) First Name" << std::endl
+			<< "	2) Last Name" << std::endl
+			<< "	3) Email Address" << std::endl
+		    << "	4) Age" << std::endl
+		    << "	5) Degree Type" << std::endl
+			<< "> ";
+	std::cin >> updateNum;
+	switch (updateNum) {
+	case 1:
+		std::cout << "Please enter the new first name: " << std::endl << "> ";
+		std::cin >> firstName;
+		student->set_firstName(firstName);
+		break;
+	case 2:
+		std::cout << "Please enter the new last name: " << std::endl << "> ";
+		std::cin >> lastName;
+		student->set_lastName(lastName);
+		break;
+	case 3:
+		std::cout << "Please enter the new email address: " << std::endl << "> ";
+		std::cin >> emailAddress;
+		student->set_emailAddress(emailAddress);
+		break;
+	case 4:
+		std::cout << "Please enter the new age: " << std::endl << "> ";
+		std::cin >> age;
+		student->set_age(age);
+		break;
+	case 5:
+		while (true) {
+			std::cout << "Please enter the new degree type: " << std::endl;
+			std::cout << "	1) Network" << std::endl
+				<< "	2) Security" << std::endl
+				<< "	3) Software" << std::endl
+				<< "> ";
+			std::cin >> degreeIn;
+
+			if (degreeIn == 1)
+			{
+				degree = Degree::NETWORK;
+				classRosterArray[getStudentPosition(student)] = new NetworkStudent(student->get_studentID(), student->get_firstName(), student->get_lastName(), student->get_emailAddress(), student->get_age(), student->get_numDays(), degree);
+				break;
+			}
+			else if (degreeIn == 2)
+			{
+				degree = Degree::SECURITY;
+				classRosterArray[getStudentPosition(student)] = new SecurityStudent(student->get_studentID(), student->get_firstName(), student->get_lastName(), student->get_emailAddress(), student->get_age(), student->get_numDays(), degree);
+				break;
+			}
+			else if (degreeIn == 3)
+			{
+				degree = Degree::SOFTWARE;
+				classRosterArray[getStudentPosition(student)] = new SoftwareStudent(student->get_studentID(), student->get_firstName(), student->get_lastName(), student->get_emailAddress(), student->get_age(), student->get_numDays(), degree);
+				break;
+			}
+			else {
+				std::cout << "ERROR: invalid entry" << std::endl;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+};
+
 /*Remove method*/
 void Roster::remove(std::string studentID) {
 	std::cout << "Removing studentID: " << studentID << std::endl;
@@ -159,6 +261,7 @@ void Roster::printByDegreeProgram(Degree degreeTypes)
 	}
 };
 
+/* user created student */
 void createStudent(Roster& classRoster) {
 	std::string fName;
 	std::string lName;
@@ -188,7 +291,7 @@ void createStudent(Roster& classRoster) {
 			<< "	1) Network" << std::endl
 			<< "	2) Security" << std::endl
 			<< "	3) Software" << std::endl
-			<< "> " << std::endl;
+			<< "> ";
 		std::cin >> degreeType;
 		if (degreeType == "1") {
 			degreeT = Degree::NETWORK;
@@ -212,9 +315,13 @@ void createStudent(Roster& classRoster) {
 
 };
 
+/* method that takes user input to add/update/delete student information */
 int getUserInput(Roster& classRoster) {
 	std::string userInput = "";
 	std::string userDelete = "";
+	std::string studentID = "";
+	Student* student = nullptr;
+	Student* updatedStudent = nullptr;
 
 	std::cout << "Please enter the numeric value for what you would like to do." << std::endl;
 	std::cout << "	1) add" << std::endl
@@ -232,11 +339,18 @@ int getUserInput(Roster& classRoster) {
 		return 1;
 	}
 	else if (userInput == "2") {
-		std::cout << "user typed modify" << std::endl;
+		std::cout << "Here are the current students that we have on the roster: " << std::endl;
+		classRoster.printAll();
+		std::cout << "Please enter the student ID that you want to update: " << std::endl
+			<< "> ";
+		std::cin >> studentID;
+		student = classRoster.getStudent(studentID);
+		classRoster.modifyStudent(student);
 		return 2;
 	}
 	else if (userInput == "3") {
-		std::cout << "Please enter the student's ID: " << std::endl;
+		std::cout << "Please enter the student's ID: " << std::endl
+			<< "> ";
 		std::cin >> userDelete;
 		classRoster.remove(userDelete);
 		return 3;

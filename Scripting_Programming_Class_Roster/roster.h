@@ -31,6 +31,12 @@ public:
 	//removes students from the roster by their IDs and also prints an error if the ID is not found.
 	void remove(std::string studentID);
 
+	int getStudentPosition(Student* student);
+
+	void modifyStudent(Student* student);
+
+	Student* getStudent(std::string studentID);
+
 	//prints a complete TAB separated list of studnet data using accer functions.
 	void printAll();
 

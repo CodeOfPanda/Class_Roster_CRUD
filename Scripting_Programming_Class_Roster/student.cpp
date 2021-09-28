@@ -103,7 +103,7 @@ void Student::set_numDays(int numDays[])
 /*Print*/
 void Student::Print()
 {
-	std::cout << get_studentID()
+	std::cout << "ID: " << get_studentID()
 		<< "\tFirst Name: " << get_firstName()
 		<< "\tLast Name: " << get_lastName()
 		<< "\tAge: " << get_age();
